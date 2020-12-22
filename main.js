@@ -2,15 +2,46 @@
  * Created by ravkrishnan on 3/23/19.
  */
 
+
+
 // Destructuring
 // Template Literals
 // Loops
 //
 const express = require("express");
+const cors = require('cors');
+const path = require('path');
+const router = express.Router();
 
+// libraries
 const _ = require ('lodash');
+const {user, personObject, getName, getAge} = require('./user');
 
 
+const app = new express();
+app.use(cors());
+
+app.use('/', router);
+
+router.get('/', (req, res)=> {
+    res.sendFile(path.join(__dirname+'/app.html'));
+});
+
+app.listen(4010, ()=> {
+    console.log('listening requests on port 4010');
+});
+
+console.log(__dirname);
+console.log(__filename);
+// let time = 0;
+// const timer = setInterval(()=> {
+//     time+= 2;
+//     console.log(`${time} interval`);
+//     if ( time >= 10)
+//         clearInterval(timer);
+//     }, 2000);
+//
+// console.log(this);
 console.log('My first Program');
 
 const person1 = { name : 'ganesh', age : 35, sex: 'male'};
@@ -115,9 +146,9 @@ console.log(add5(10));
 // if you use arrow function, you dont need to bind it.
 const display = function (){
     console.log(this.name)
-}
+};
 const personObj = { name : 'ganesh',
-    getDisplay() {
+    getDisplay: function() {
         console.log(`${this.name}  ${this.age}`);
     },
     getDisplayAfterTimedOut() {
@@ -133,7 +164,7 @@ let displayBind = display.bind(personObj); // bind
 personObj.getDisplayAfterTimedOut();
 
 // call, apply, bind (you want to change the this reference to point to different object)
-// A function which can be borrowed for many objcts, without even need to create a method in the object
+// A function which can be borrowed for many objects, without even need to create a method in the object
 function addNumbers(num2, num3) {
     return this.num1 + num2 + num3;
 }
@@ -182,6 +213,120 @@ carObj.drive();
 const bmwObj = new BMW('BMW', '400');
 bmwObj.speed();
 
+// callback example
+const apiResult = false;
+
+function consolidateResponse( callback, errorCallback) {
+    if ( apiResult === true) {
+        callback('Success response from API')
+    }
+    else {
+        errorCallback( { name : 'API_FAILURE', message : 'Server error'})
+    }
+}
+
+consolidateResponse ( (message) => console.log(message),
+    (errorObj) => console.log(`${errorObj.name} : ${errorObj.message}`))
+
+// converting callback to promise
+function consolidateResponseUsingPromise() {
+    return new Promise( (resolve, reject) => {
+        if ( apiResult === true) {
+            resolve('Success response from API')
+        }
+        else {
+            reject( { name : 'API_FAILURE', message : 'Server error'})
+        }
+    })
+}
+
+consolidateResponseUsingPromise().then( (message) => console.log(message))
+    .catch( error => console.log(`${error.name} ${error.message}`))
+
+// Promises
+console.log('Promises');
+const p = new Promise( (resolve, reject) => {
+    let a = 1+1;
+    if ( a === 3) {
+        resolve('success')
+    }
+    else {
+        reject('failure')
+    }
+})
+
+p.then( (message) => console.log(message)).catch( (message) => console.log(message))
+
+// Promise all, race
+
+const p1 = new Promise( (resolve, reject) => {
+    resolve('p1 promise executed')
+})
+
+const p2 = new Promise( (resolve, reject) => {
+    resolve('p2 promise executed')
+})
+
+// all allows all the promises needs to be completed. messages is an array of all the promises response.
+Promise.all([p1, p2])
+    .then( messages => console.log(messages))
+    .catch( error => console.log(error))
+
+// race - if any one of the promise is completed. it will execute then method
+Promise.race([p1, p2])
+    .then( message => console.log(message))
+    .catch( error => console.log(error))
+
+// Array methods (filter, map, find, forEach(void return type), some, every, reduce, includes)
+// some, every returns boolean
+// map, transforms one object into another object
+// filter, find returns the filtered items or the first item
+// reduce returns cumulative values, includes returns boolean value
+
+console.log('Array Helper methods');
+const items = [
+    {name : 'pen', price : 35},
+    {name : 'pencil', price : 20},
+    {name : 'toy' , price : 100},
+    {name : 'book', price : 50}
+]
+
+const filteredItems = items.filter( (item) => item.price > 50)
+console.log(`Filtered Items: ${JSON.stringify(filteredItems)}`);
+
+const listItems = items.map( (item) => item.name)
+console.log(`Names List: ${listItems}`);
+
+const findItem = items.find( (item) => item.price === 50)
+console.log(`Find Item: ${JSON.stringify(findItem)}`);
+
+items.forEach( (item) => console.log(item))
+
+const expansiveItems = items.some( (item) => item.price > 50)
+console.log(`Expansive Item: ${expansiveItems}`);
+
+const InExpansiveItems = items.every( (item) => item.price <= 100)
+console.log(`InExpansive Item: ${InExpansiveItems}`);
+
+const values = ['ram', 'ganesh', 'vinoth']
+console.log(`Incude returns ${values.includes('ganesh')}`);
+
+const sum = items.reduce ( (initTotal, item) => {
+    return item.price + initTotal;
+}, 0)
+console.log(`Total Sum: ${sum}`);
+
+const TotalSum = items.filter( (item) => item.price > 30).reduce( (total, item) => total + item.price, 0)
+console.log(`Total Sum : ${TotalSum}`);
+
+// ES6 modules (require and exports)
+console.log('Exports and require');
+const UserObj = new user('ganesh', 30);
+getName(UserObj);
+getAge(UserObj);
+personObject.displayName();
+
+
 
 // import export
 // import React { Component} from 'react'; Named Export: { Component} , Default Export : React
@@ -189,5 +334,9 @@ bmwObj.speed();
 // export - Named Export
 
 
+const bill = (products, tax) => {
+    return products.reduce( (total, product) => product+ (product* tax) +total, 0);
+}
+console.log(bill([10,15,30], 0.2));
 
 
