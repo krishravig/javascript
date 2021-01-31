@@ -8,10 +8,19 @@
 // Template Literals
 // Loops
 //
+
+
 const express = require("express");
 const cors = require('cors');
 const path = require('path');
 const router = express.Router();
+
+/*Unfortunately, Node.js doesn't support ES6's import, export yet.
+import video, {play as videoPlay} from './video.js' ;
+const vObj = new video('Kids');
+vObj.display();
+videoPlay();
+*/
 
 // libraries
 const _ = require ('lodash');
@@ -55,7 +64,7 @@ console.table({person1, person2, person3});
 let value = 10;
 const abc = "ram";
 
-let names;
+let names;  // names is undefined, you can check it using ==
 console.log(`names is undefined?: ${names == null}`); // only usecases to check whether it is undefined or not
 console.log(abc === "ram");
 
@@ -139,11 +148,41 @@ let add5 = addition(5);
 console.log(add5(7));
 console.log(add5(10));
 
-// this usage
-// A function inside the class is considered as method. this refers current instance object
-// inside regular function, this refers to window ( browser), global in Node
-// when you use anonymous functions, you need to bind the this object with the actual object.
-// if you use arrow function, you dont need to bind it.
+/* this usage
+A object that is executing the current function
+A function inside the class is considered as method. this refers current instance object
+inside regular function, this refers to window ( browser), global in Node
+when you use anonymous functions, you need to bind the this object with the actual object.
+if you use arrow function, you dont need to bind it.
+https://arunrajeevan.medium.com/understanding-this-keyword-in-javascript-a224a6063452
+Note: Arrow functions are the best choice when working with closures or callbacks, but not a good choice when working with class/object methods or constructors.
+
+ */
+
+console.log('this concepts in javascript');
+const myFunction = () => {
+    console.log('Inside MyFunction')
+    console.log(this); // refers empty object {}
+}
+myFunction();
+
+const regularFunc = function() {
+    console.log('Inside RegularFunc');
+    console.log(this); // refers {global object}
+}
+regularFunc();
+
+class Book {
+  constructor(title) {
+      this.title = title;
+  }
+  print()  {
+      console.log(`Book Name: ${this.title}`)
+  }
+};
+const bookObj = new Book('Javascript');
+bookObj.print();
+
 const display = function (){
     console.log(this.name)
 };
@@ -244,7 +283,10 @@ consolidateResponseUsingPromise().then( (message) => console.log(message))
     .catch( error => console.log(`${error.name} ${error.message}`))
 
 // Promises
+// promise function accepts two arguments. one is resolve and another one is reject.
+// p.then will execute resolve function. p.catch will execute reject function
 console.log('Promises');
+
 const p = new Promise( (resolve, reject) => {
     let a = 1+1;
     if ( a === 3) {
@@ -339,4 +381,49 @@ const bill = (products, tax) => {
 }
 console.log(bill([10,15,30], 0.2));
 
+/* Promise, async, await
+async await - syntactic sugar on top of promise
+nested then calls can be avoided using async
+ create a function as async function and write async code with await statement
+ */
+function makeRequest(request) {
+    return new Promise( (resolve, reject) => {
+       if ( request === 'Google')
+           resolve(`Request received from ${request}`);
+       else
+           reject(`unable to make request to ${request}`);
+    });
+}
 
+function processResponse(response){
+    return new Promise( (resolve, reject) => {
+        resolve('success process Response');
+    })
+}
+
+// makeRequest('Google').then (response => {
+//     console.log(response);
+//     return processResponse(response);
+// }).then( resp => console.log(resp))
+//     .catch( err => console.log(err));
+
+async function doMakeRequest() {
+    try {
+        const response = await makeRequest('Google')
+        console.log(response)
+        const processedResponse = await processResponse(response)
+        console.log(processedResponse)
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+doMakeRequest();
+
+/*
+export, import
+module.exports and require
+you should have only one default export
+standard export, add the keyword before the function
+
+ */
