@@ -326,6 +326,14 @@ Promise.race([p1, p2])
 // reduce returns cumulative values, includes returns boolean value
 
 console.log('Array Helper methods');
+const numbers = [1, 2, 3];
+numbers.splice(3, 0, 4,5); // add elements
+numbers.splice(1,1, -2); // replace
+numbers.splice(1,1); // delete
+numbers.splice(2);
+console.log(numbers);
+
+
 const items = [
     {name : 'pen', price : 35},
     {name : 'pencil', price : 20},
