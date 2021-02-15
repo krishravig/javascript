@@ -3,18 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>"My First Program"</title>
+    <style>
+        .grandparent {
+            position:relative;
+            width:1000px;
+            height:1000px;
+            background:red;
+        }
+        .parent {
+            position:relative;
+            top:50px;
+            left:50px;
+            background:cyan;
+            width:400px;
+            height:400px;
+            bottom: 50px;
+        }
+        .child {
+            position:relative;
+            background:white;
+            top:50px;
+            left:50px;
+            width:100px;
+            height:100px;
+            bottom: 50px;
+        }
+    </style>
      <script src="./client/browser.js" defer ></script>
 </head>
 <body>
-<style>
-    span.record {
-        background: red;
-    }
-</style>
+
 <h1> Test Program</h1>
 <div>
     <span id="row1" class="record" data-first="First Record"> Hello</span>
     <span id="row2" class="record" data-second="Second Record"> Bye </span>
+</div>
+    <div class="grandparent" >
+        <div class="parent">
+            <div class="child"> child1 </div>
+            <div class="child"> child2</div>
+        </div>
+        <div class="parent">
+            <div class="child"> child3</div>
+            <div class="child" id="child4"> child4</div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
