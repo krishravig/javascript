@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>"My First Program"</title>
-    <script type="module" src="./main.js" ></script>
+     <script src="./client/browser.js" defer ></script>
 </head>
 <body>
+<style>
+    span.record {
+        background: red;
+    }
+</style>
 <h1> Test Program</h1>
+<div>
+    <span id="row1" class="record" data-first="First Record"> Hello</span>
+    <span id="row2" class="record" data-second="Second Record"> Bye </span>
+</div>
 </body>
 </html>

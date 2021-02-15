@@ -53,6 +53,14 @@ console.log(__filename);
 // console.log(this);
 console.log('My first Program');
 
+const myObj = { name : 'ravi'};
+myObj.age = 15;
+myObj['country'] = 'USA';
+let address = `address_${myObj.country}`;
+myObj[address] ='Milpitas';
+
+console.log(myObj);
+
 const person1 = { name : 'ganesh', age : 35, sex: 'male'};
 const person2 = { name : 'kumar', age : 35, sex: 'male'};
 const person3 = { name : 'ram', age : 35, sex: 'male'};
