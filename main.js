@@ -87,8 +87,9 @@ const getAccounts = function(limit = 20) {
 }
 getAccounts();
 
-// 2. REST and Spread operator for unlimited arguments
-const student = function(name, age,...subjects) {
+// 2. Spread -> spread the array elements into individual elements
+// REST - condense the multiple elements into a array.
+const student = function(name, age,...subjects) { // here it act as REST
     const print = `${name} ${age} subjects:`; // Template Literals
     console.log(print);
     subjects.forEach(sub => console.log(sub));
@@ -98,7 +99,7 @@ student('ram', 15, 'tamil', 'english', 'maths', 'science', 'history');
 // Spread operator is used for Arrays and Objects(Destructuring)
 const firstArr = [1, 2, 3];
 const second = [4, 5,6];
-const combined = [...firstArr, 0, ...second];
+const combined = [...firstArr, 0, ...second]; // here it act as spread
 console.log(combined);
 
 
